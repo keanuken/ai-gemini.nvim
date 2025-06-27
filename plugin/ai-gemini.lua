@@ -1,8 +1,12 @@
 -- plugin/ai-gemini.lua
 
+-- Jangan panggil require("ai-gemini") di sini (global scope)!
+-- local ai_gemini = require("ai-gemini") -- <--- HAPUS BARIS INI JIKA ADA
+
 vim.api.nvim_create_user_command(
     "AIGeminiChat",
     function()
+        -- Panggil require di dalam fungsi ini
         require("ai-gemini").start_chat_session()
     end,
     {
@@ -14,9 +18,11 @@ vim.api.nvim_create_user_command(
 vim.api.nvim_create_user_command(
     "AIGeminiExplain",
     function(args)
+        -- Panggil require di dalam fungsi ini
         local ai_gemini = require("ai-gemini")
+        -- Cek ini hanya untuk berjaga-jaga, seharusnya sudah dikonfigurasi oleh user di init.lua mereka
         if not ai_gemini or not ai_gemini.opts then
-            vim.notify("AI-Gemini: Plugin not configured correctly. Run :Lazy sync", vim.log.levels.ERROR)
+            vim.notify("AI-Gemini: Plugin not configured correctly. Please check your Neovim init.lua.", vim.log.levels.ERROR)
             return
         end
 
@@ -46,5 +52,4 @@ vim.api.nvim_create_user_command(
         range = "%",
     }
 )
-
 
